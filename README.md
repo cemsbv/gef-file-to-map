@@ -18,6 +18,6 @@ maturin develop
 # Open a GEF file locally
 python
 
->>> from gef_file_to_map import parse
+>>> from gef_file_to_map import gef_to_map
 >>> gef_to_map(open('./tests/test.gef').read())
 ```
