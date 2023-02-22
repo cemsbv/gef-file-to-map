@@ -1,0 +1,15 @@
+[project]
+name = "gef-file-to-map"
+version = "0.1.0"
+description = "Utility library for parsing .gef files"
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["gef", "pygef"]
+authors = [{ name = "Thomas Versteeg", email = "t.versteeg@cemsbv.io" }]
+
+[project.urls]
+repository = "https://github.com/cemsbv/gef-file-to-map"
+
+[build-system]
+requires = ["maturin>=0.14,<0.15"]
+build-backend = "maturin"

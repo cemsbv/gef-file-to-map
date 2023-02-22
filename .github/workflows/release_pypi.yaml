@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Build and publish
+        uses: messense/maturin-action@v1
+        env:
+          MATURIN_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          MATURIN_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        with:
+          maturin-version: latest
+          command: publish
