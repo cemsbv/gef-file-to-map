@@ -2,11 +2,16 @@
 name = "gef-file-to-map"
 version = "0.1.0"
 description = "Utility library for parsing .gef files"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = ["gef", "pygef"]
 authors = [{ name = "Thomas Versteeg", email = "t.versteeg@cemsbv.io" }]
+classifiers = [
+	"Programming Language :: Rust",
+	"Programming Language :: Python :: Implementation :: CPython",
+	"Programming Language :: Python :: Implementation :: PyPy",
+]
 
 [project.urls]
 repository = "https://github.com/cemsbv/gef-file-to-map"
