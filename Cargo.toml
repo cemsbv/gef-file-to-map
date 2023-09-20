@@ -9,10 +9,10 @@ name = "gef_file_to_map"
 crate-type = ["cdylib"]
 
 [dependencies]
-itertools = "0.10.5"
+itertools = "0.11.0"
 nom = "7.1.3"
-pyo3 = { version = "0.18.3", features = ["extension-module", "abi3-py37"] }
-thiserror = "1.0.40"
+pyo3 = { version = "0.19.2", features = ["extension-module", "abi3-py37"] }
+thiserror = "1.0.48"
 
 # Automatically add git hooks for code conventions & tests
 [dev-dependencies.cargo-husky]
