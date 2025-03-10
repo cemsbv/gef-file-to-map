@@ -17,5 +17,10 @@ classifiers = [
 repository = "https://github.com/cemsbv/gef-file-to-map"
 
 [build-system]
-requires = ["maturin>=0.14,<0.15"]
+requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+strip = true
+bindings = "pyo3"
