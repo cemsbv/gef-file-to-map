@@ -1,6 +1,6 @@
 //! Error primitives.
 
-use pyo3::{exceptions::PyException, PyErr};
+use pyo3::{PyErr, exceptions::PyException};
 use std::convert::From;
 
 /// Alias result to always return our own error type.

@@ -1,11 +1,14 @@
 //! Header parsing.
 
-use winnow::{IResult, Parser as _};
+use winnow::{
+    ascii::*,
+    combinator::*,
+    error::{StrContext, StrContextValue},
+    prelude::*,
+    token::*,
+};
 
 use crate::error::{Error, Result};
-
-/// Separator used between values in the GEF file.
-const VALUE_SEPARATOR: char = ',';
 
 /// References to the strings of the file where the header is and it's values.
 #[derive(Debug, Clone, PartialEq)]
@@ -26,71 +29,71 @@ impl<'a> Header<'a> {
     ///
     /// The string shouldn't contain a '#' character at the begin nor a newline
     /// at the end.
-    fn from_str(s: &'a str) -> IResult<&'a str, Self, winnow::error::Error<&'a str>> {
-        // Get the name of the header, the left hand side
-        let (s, name) = winnow::error::context(
-            "the name of the header",
-            winnow::character::complete::alphanumeric1,
+    fn from_str(input: &mut &'a str) -> winnow::Result<Self> {
+        // Take the hash symbol at the beginning and the whitespace
+        ('#', space0)
+            .context(StrContext::Label("header hash"))
+            .parse_next(input)?;
+
+        // Take the name
+        let name = alphanumeric1
+            .context(StrContext::Label("header name"))
+            .parse_next(input)?;
+
+        // Ignore the '=' symbol, although it is required
+        (space0, '=', space0)
+            .context(StrContext::Label("header equality symbol"))
+            .parse_next(input)?;
+
+        // Get the comma-space separated values
+        let mut values: Vec<&str> = separated(
+            0..,
+            // Get until the ',' character and trim the spaces
+            delimited(space0, take_till(1.., (',', '\r', '\n')), space0)
+                .context(StrContext::Label("header value")),
+            ',',
         )
-        .parse(s)?;
+        .context(StrContext::Label("header values"))
+        .context(StrContext::Expected(StrContextValue::Description(
+            "comma separated list of values",
+        )))
+        .parse_next(input)?;
 
-        let (s, values) = winnow::sequence::preceded(
-            // Take all whitespace between the column header name and the = symbol
-            winnow::character::complete::space0,
-            // Get the values between the '=' char and the end of the line
-            winnow::sequence::preceded(
-                // Take all spaces and = characters
-                winnow::sequence::preceded(
-                    winnow::character::complete::char('='),
-                    winnow::character::complete::space0,
-                ),
-                winnow::error::context(
-                    "the header values",
-                    // Get the comma-space separated values
-                    winnow::multi::separated_list0(
-                        // Get until the ',' character and trim the spaces
-                        winnow::sequence::delimited(
-                            winnow::character::complete::space0,
-                            winnow::character::complete::char(VALUE_SEPARATOR),
-                            winnow::character::complete::space0,
-                        ),
-                        // Take until the end of the line or until a separator is found
-                        winnow::bytes::complete::take_till(|c: char| {
-                            c == VALUE_SEPARATOR || c.is_control()
-                        }),
-                    ),
-                ),
-            ),
-        )
-        .parse(s)?;
+        // Remove empty values
+        if values == [""] {
+            values.clear();
+        }
 
-        // Make empty lists actually empty
-        let values = if values == [""] { Vec::new() } else { values };
+        // Take the newline
+        (space0, take_while(0.., ('\n', '\r'))).parse_next(input)?;
 
-        Ok((s, Self { name, values }))
+        Ok(Self { name, values })
     }
 }
 
 /// Parse the headers of the GEF file.
 ///
 /// Return the parsed headers and a reference to the rest of the file.
-pub(crate) fn parse_headers(gef: &'_ str) -> Result<(&'_ str, Vec<Header<'_>>)> {
-    winnow::sequence::preceded(
-        // Ignore the whitespace before the first header line
-        winnow::character::complete::multispace0,
-        // Loop over all sequences starting with # until the newline character
-        winnow::multi::many0(winnow::error::context(
-            "a header line",
-            winnow::sequence::delimited(
-                winnow::character::complete::char('#'),
-                Header::from_str,
-                // Allow multiple lines
-                winnow::multi::many1::<_, _, Vec<_>, _, _>(winnow::character::line_ending),
-            ),
-        )),
-    )(gef)
-    // Convert the nom error to our own error type
-    .map_err(|err| Error::Parsing(err.to_string()))
+pub(crate) fn parse_headers(mut gef: &'_ str) -> Result<(&'_ str, Vec<Header<'_>>)> {
+    parse_headers_impl
+        .parse_next(&mut gef)
+        // Convert the winnow error to our own error type
+        .map_err(|err| Error::Parsing(err.to_string()))
+}
+
+/// Parse the list of headers implementation.
+pub(crate) fn parse_headers_impl<'a>(
+    input: &mut &'a str,
+) -> winnow::Result<(&'a str, Vec<Header<'a>>)> {
+    // Skip initial whitespace
+    multispace0.parse_next(input)?;
+
+    // Loop over all sequences starting with # until the newline character
+    let (values, _) = repeat_till(0.., Header::from_str, not('#'))
+        .context(StrContext::Label("headers"))
+        .parse_next(input)?;
+
+    Ok((input, values))
 }
 
 #[cfg(test)]
@@ -100,7 +103,7 @@ mod tests {
     #[test]
     fn test_single_header() {
         assert_eq!(
-            Header::from_str("A= 1").unwrap().1,
+            Header::from_str(&mut "#A= 1").unwrap(),
             Header {
                 name: "A",
                 values: vec!["1"]
@@ -108,7 +111,7 @@ mod tests {
         );
 
         assert_eq!(
-            Header::from_str("A = 1").unwrap().1,
+            Header::from_str(&mut "#A = 1").unwrap(),
             Header {
                 name: "A",
                 values: vec!["1"]
@@ -116,7 +119,7 @@ mod tests {
         );
 
         assert_eq!(
-            Header::from_str("A= 1, 2").unwrap().1,
+            Header::from_str(&mut "#A= 1, 2").unwrap(),
             Header {
                 name: "A",
                 values: vec!["1", "2"]
@@ -127,7 +130,7 @@ mod tests {
     #[test]
     fn test_empty_header() {
         assert_eq!(
-            Header::from_str("A=").unwrap().1,
+            Header::from_str(&mut "#A=").unwrap(),
             Header {
                 name: "A",
                 values: vec![]
@@ -135,7 +138,6 @@ mod tests {
         );
 
         let (rest, headers) = parse_headers("#A=\nrest").unwrap();
-        assert_eq!(rest, "rest");
         assert_eq!(
             headers,
             vec![Header {
@@ -143,6 +145,7 @@ mod tests {
                 values: vec![]
             },]
         );
+        assert_eq!(rest, "rest");
     }
 
     #[test]
