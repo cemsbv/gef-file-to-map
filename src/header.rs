@@ -1,5 +1,7 @@
 //! Header parsing.
 
+use nom::Parser as _;
+
 use crate::{
     error::{Error, Result},
     nom::IResult,
@@ -32,7 +34,8 @@ impl<'a> Header<'a> {
         let (s, name) = nom::error::context(
             "the name of the header",
             nom::character::complete::alphanumeric1,
-        )(s)?;
+        )
+        .parse(s)?;
 
         let (s, values) = nom::sequence::preceded(
             // Take all whitespace between the column header name and the = symbol
@@ -61,7 +64,8 @@ impl<'a> Header<'a> {
                     ),
                 ),
             ),
-        )(s)?;
+        )
+        .parse(s)?;
 
         // Make empty lists actually empty
         let values = if values == [""] { Vec::new() } else { values };
@@ -87,7 +91,8 @@ pub(crate) fn parse_headers(gef: &'_ str) -> Result<(&'_ str, Vec<Header<'_>>)> 
                 nom::multi::many1(nom::character::complete::line_ending),
             ),
         )),
-    )(gef)
+    )
+    .parse(gef)
     // Convert the nom error to our own error type
     .map_err(|err| Error::Parsing(err.to_string()))
 }
