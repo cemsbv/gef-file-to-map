@@ -5,10 +5,10 @@
 //! ## Example
 //!
 //! ```
-//! # fn main() -> Result<(), gef::error::Error> {
-//! let gef_file = include_str!("../tests/files/example.gef");
+//! # fn main() -> Result<(), gef_file_to_map::error::Error> {
+//! let gef_file = include_str!("../tests/test.gef");
 //!
-//! let (csv, headers) = gef::parse(&gef_file)?;
+//! let (csv, headers) = gef_file_to_map::parse(&gef_file)?;
 //! # Ok(())
 //! # }
 //! ```
@@ -73,5 +73,14 @@ mod tests {
             "0.0000e+000 9.9990e+003 9.9990e+003 9.9990e+003 9.9990e+003 9.9990e+003 9.9990e+003 \
              9.9990e+003 9.9990e+003"
         ));
+    }
+
+    #[test]
+    fn example_2() {
+        let (csv, headers) = super::parse(include_str!("../tests/big-file.gef")).unwrap();
+
+        assert!(headers.contains_key("FIRSTSCAN"));
+
+        assert!(csv.starts_with("0.00;0.0017;0.0000;-0.3571;-1.5010;5.5400;1.5429;0.0000;!"));
     }
 }

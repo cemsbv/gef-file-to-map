@@ -4,16 +4,18 @@ version = "0.2.0"
 edition = "2024"
 rust-version = "1.85.0"
 
-[lib]
-# Name of the python module
-name = "gef_file_to_map"
-crate-type = ["cdylib"]
-
 [dependencies]
 itertools = "0.14.0"
 pyo3 = { version = "0.24.0", features = ["extension-module", "abi3-py37"] }
 thiserror = "2.0.12"
 winnow = "0.7.3"
+
+[dev-dependencies]
+divan = "0.1.17"
+
+[[bench]]
+name = "test_gef"
+harness = false
 
 [profile.release]
 lto = true

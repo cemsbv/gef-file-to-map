@@ -24,3 +24,4 @@ build-backend = "maturin"
 features = ["pyo3/extension-module"]
 strip = true
 bindings = "pyo3"
+module-name = "gef_file_to_map"
