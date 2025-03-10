@@ -1,11 +1,8 @@
 //! Header parsing.
 
-use nom::Parser as _;
+use winnow::{IResult, Parser as _};
 
-use crate::{
-    error::{Error, Result},
-    nom::IResult,
-};
+use crate::error::{Error, Result};
 
 /// Separator used between values in the GEF file.
 const VALUE_SEPARATOR: char = ',';
@@ -29,36 +26,36 @@ impl<'a> Header<'a> {
     ///
     /// The string shouldn't contain a '#' character at the begin nor a newline
     /// at the end.
-    fn from_str(s: &'a str) -> IResult<'a, Self> {
+    fn from_str(s: &'a str) -> IResult<&'a str, Self, winnow::error::Error<&'a str>> {
         // Get the name of the header, the left hand side
-        let (s, name) = nom::error::context(
+        let (s, name) = winnow::error::context(
             "the name of the header",
-            nom::character::complete::alphanumeric1,
+            winnow::character::complete::alphanumeric1,
         )
         .parse(s)?;
 
-        let (s, values) = nom::sequence::preceded(
+        let (s, values) = winnow::sequence::preceded(
             // Take all whitespace between the column header name and the = symbol
-            nom::character::complete::space0,
+            winnow::character::complete::space0,
             // Get the values between the '=' char and the end of the line
-            nom::sequence::preceded(
+            winnow::sequence::preceded(
                 // Take all spaces and = characters
-                nom::sequence::preceded(
-                    nom::character::complete::char('='),
-                    nom::character::complete::space0,
+                winnow::sequence::preceded(
+                    winnow::character::complete::char('='),
+                    winnow::character::complete::space0,
                 ),
-                nom::error::context(
+                winnow::error::context(
                     "the header values",
                     // Get the comma-space separated values
-                    nom::multi::separated_list0(
+                    winnow::multi::separated_list0(
                         // Get until the ',' character and trim the spaces
-                        nom::sequence::delimited(
-                            nom::character::complete::space0,
-                            nom::character::complete::char(VALUE_SEPARATOR),
-                            nom::character::complete::space0,
+                        winnow::sequence::delimited(
+                            winnow::character::complete::space0,
+                            winnow::character::complete::char(VALUE_SEPARATOR),
+                            winnow::character::complete::space0,
                         ),
                         // Take until the end of the line or until a separator is found
-                        nom::bytes::complete::take_till(|c: char| {
+                        winnow::bytes::complete::take_till(|c: char| {
                             c == VALUE_SEPARATOR || c.is_control()
                         }),
                     ),
@@ -78,21 +75,20 @@ impl<'a> Header<'a> {
 ///
 /// Return the parsed headers and a reference to the rest of the file.
 pub(crate) fn parse_headers(gef: &'_ str) -> Result<(&'_ str, Vec<Header<'_>>)> {
-    nom::sequence::preceded(
+    winnow::sequence::preceded(
         // Ignore the whitespace before the first header line
-        nom::character::complete::multispace0,
+        winnow::character::complete::multispace0,
         // Loop over all sequences starting with # until the newline character
-        nom::multi::many0(nom::error::context(
+        winnow::multi::many0(winnow::error::context(
             "a header line",
-            nom::sequence::delimited(
-                nom::character::complete::char('#'),
+            winnow::sequence::delimited(
+                winnow::character::complete::char('#'),
                 Header::from_str,
                 // Allow multiple lines
-                nom::multi::many1(nom::character::complete::line_ending),
+                winnow::multi::many1::<_, _, Vec<_>, _, _>(winnow::character::line_ending),
             ),
         )),
-    )
-    .parse(gef)
+    )(gef)
     // Convert the nom error to our own error type
     .map_err(|err| Error::Parsing(err.to_string()))
 }

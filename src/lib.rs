@@ -15,7 +15,6 @@
 
 pub mod error;
 mod header;
-mod nom;
 
 use itertools::Itertools;
 use pyo3::prelude::*;
