@@ -17,10 +17,11 @@ pub mod error;
 mod header;
 mod nom;
 
-use crate::{error::Result, header::Header};
 use itertools::Itertools;
-use pyo3::{types::PyModule, PyResult, Python};
+use pyo3::prelude::*;
 use std::collections::HashMap;
+
+use crate::{error::Result, header::Header};
 
 /// Type defined for easy use and extra methods.
 pub type HeaderMap<'a> = HashMap<&'a str, Vec<Vec<&'a str>>>;
@@ -45,15 +46,15 @@ pub fn parse(gef: &'_ str) -> Result<(&'_ str, HeaderMap<'_>)> {
 }
 
 // Python wrapper around the parse function.
-#[pyo3::pyfunction]
+#[pyfunction]
 fn gef_to_map(gef: &'_ str) -> PyResult<(&'_ str, HeaderMap<'_>)> {
     // Map the error to a python error
     parse(gef).map_err(|err| err.into())
 }
 
 /// The python module.
-#[pyo3::pymodule]
-fn gef_file_to_map(_py: Python, module: &PyModule) -> PyResult<()> {
+#[pymodule]
+fn gef_file_to_map(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(pyo3::wrap_pyfunction!(gef_to_map, module)?)?;
 
     Ok(())

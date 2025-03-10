@@ -27,7 +27,7 @@ impl<'a> Header<'a> {
     ///
     /// The string shouldn't contain a '#' character at the begin nor a newline
     /// at the end.
-    fn from_str(s: &'a str) -> IResult<Self> {
+    fn from_str(s: &'a str) -> IResult<'a, Self> {
         // Get the name of the header, the left hand side
         let (s, name) = nom::error::context(
             "the name of the header",
