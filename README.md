@@ -1,6 +1,6 @@
 # gef-file-to-map
 
-[![PyPI version](https://badge.fury.io/py/gef-file-to-map.svg)](https://pypi.org/project/gef-file-to-map/0.1.0/)
+[![PyPI version](https://badge.fury.io/py/gef-file-to-map.svg)](https://pypi.org/project/gef-file-to-map)
 
 Utility library for parsing of .gef files, written for [pygef](https://github.com/cemsbv/pygef).
 
