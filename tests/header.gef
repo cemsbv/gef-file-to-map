@@ -1,0 +1,80 @@
+#GEFID= 1, 1, 0
+#FILEOWNER= Rups 21
+#FILEDATE= 2021, 6, 8
+#PROJECTID= AA20922
+#COLUMN= 9
+#COLUMNINFO= 1, m, penetration length, 1
+#COLUMNINFO= 2, MPa, qc, 2
+#COLUMNINFO= 3, MPa, fs, 3
+#COLUMNINFO= 4, degrees, i_y, 10
+#COLUMNINFO= 5, degrees, i_x, 9
+#COLUMNINFO= 6, kN, Qt_H, 136
+#COLUMNINFO= 7, Sec, SampleTime, 12
+#COLUMNINFO= 8, degrees, i_res, 8
+#COLUMNINFO= 9, %, Rf, 4
+#COMPANYID= Geosonda B.V., 27184822, 31
+#DATAFORMAT= ASCII
+#DATATYPE= REAL8
+#COLUMNVOID= 1, -9999.000000
+#COLUMNVOID= 2, -9999.000000
+#COLUMNVOID= 3, -9999.000000
+#COLUMNVOID= 4, -9999.000000
+#COLUMNVOID= 5, -9999.000000
+#COLUMNVOID= 6, -9999.000000
+#COLUMNVOID= 7, -9999.000000
+#COLUMNVOID= 8, -9999.000000
+#COLUMNVOID= 9, -9999.000000
+#LASTSCAN= 3511
+#XYID= 31000, 70320, 418547, 1, 1
+#ZID= 31000, 1.14, 0.01
+#MEASUREMENTTEXT= 1, , Client
+#MEASUREMENTTEXT= 2, GEOTECHNISCH ONDERZOEK N215, Name of the project
+#MEASUREMENTTEXT= 3, MIDDELHARNIS, Location
+#MEASUREMENTTEXT= 4, S15CFII.S18493, Cone Type
+#MEASUREMENTTEXT= 5, CrawlerGeen verankering, Mass and geometry of probe apparatus
+#MEASUREMENTTEXT= 6, 5140 / 1, Test class
+#MEASUREMENTTEXT= 9, Ground level, Fixed horizontal reference level
+#MEASUREMENTTEXT= 24, v3.56, CPTest version used
+#MEASUREMENTTEXT= 25, 1.47, CPTask version used
+#MEASUREMENTVAR= 1, 1500.000000, mm2, Nom. surface area of cone tip
+#MEASUREMENTVAR= 2, 22500.000000, mm2, Nom. surface area of friction casing
+#MEASUREMENTVAR= 3, 0.800000, -, Net surface area quotient of cone tip
+#MEASUREMENTVAR= 4, 1.000000, -, Net surface area quotient of friction casing
+#MEASUREMENTVAR= 5, 95.000000, mm, Cone distance to centre of friction casing
+#MEASUREMENTVAR= 6, 1.000000, -, Friction present
+#MEASUREMENTVAR= 10, 1.000000, -, Inclination measurement present
+#MEASUREMENTVAR= 11, 1.000000, -, Use of back-flow compensator
+#MEASUREMENTVAR= 12, 0.000000, -, electrical penetration test
+#MEASUREMENTVAR= 13, 2.000000, m, Pre-excavated depth
+#MEASUREMENTVAR= 14, 0.000000, m, WaterLevel
+#MEASUREMENTVAR= 16, 35.099998, m, Penetration Length
+#MEASUREMENTVAR= 17, 0.000000, -, Stop criteria
+#MEASUREMENTVAR= 20, -0.004071, MPa, Zero measurement cone before penetration test
+#MEASUREMENTVAR= 21, 0.009829, MPa, Zero measurement cone after penetration test
+#MEASUREMENTVAR= 22, 0.001321, MPa, Zero measurement friction before penetration test
+#MEASUREMENTVAR= 23, 0.000535, MPa, Zero measurement friction after penetration test
+#MEASUREMENTVAR= 32, -0.157652, degrees, Zero measurement inclination NS before penetration test
+#MEASUREMENTVAR= 33, -0.215091, degrees, Zero measurement inclination NS after penetration test
+#MEASUREMENTVAR= 34, -1.676801, degrees, Zero measurement inclination EW before penetration test
+#MEASUREMENTVAR= 35, -1.732541, degrees, Zero measurement inclination EW after penetration test
+#PROCEDURECODE= GEF-CPT-Report, 1, 1, 0, -
+#TESTID= 106
+#PROJECTNAME= GEOTECHNISCH ONDERZOEK N215
+#REPORTCODE= GEF-CPT-Report, 1, 1, 0, -
+#REPORTDATAFORMAT= F7.2 F7.4 F7.4 F7.4 F7.4 F7.4 F7.4 F7.4 F7.4
+#STARTDATE= 2021, 6, 8
+#STARTTIME= 10, 47, 0.000000
+#OS= DOS
+#EOH=
+   0.00 -0.0039  0.0030  0.0676 -1.7342 34.2480 -3.2400  1.7355 52.7192
+   0.01  0.0001  0.0030  0.2928 -2.0045 30.5140 -1.2300  2.0258 32.4540
+   0.02  0.0001  0.0030 -0.0901 -1.8694 30.6560  0.0200  1.8715 21.3898
+   0.03  0.0051  0.0030 -0.3153 -1.4640 30.8320  0.8100  1.4975 14.9708
+   0.04  0.0100  0.0030 -0.3153 -1.5090 30.8320  1.4600  1.5416 10.5365
+   0.05  0.0200  0.0030 -0.2477 -1.6667 31.2870 13.2500  1.6850  7.2022
+   0.06  0.0239  0.0031 -0.7883 -1.2387 31.7420 16.2500  1.4683  4.6727
+   0.07  0.0239  0.0032 -0.3378 -1.5315 32.1350 17.3400  1.5684  3.5830
+   0.08  0.0279  0.0034 -0.4279 -1.6892 31.4370 20.2700  1.7426  2.8901
+   0.09  0.0358  0.0037 -0.3604 -1.7342 31.3020 21.5400  1.7713  2.5444
+   0.10  0.0636  0.0048 -0.5180 -1.8018 31.2350 22.3200  1.8748  2.7113
+   0.11  0.0875  0.0048 -0.6532 -1.5541 31.2020 22.9400  1.6857  2.3173

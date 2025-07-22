@@ -83,4 +83,22 @@ mod tests {
 
         assert!(csv.starts_with("0.00;0.0017;0.0000;-0.3571;-1.5010;5.5400;1.5429;0.0000;!"));
     }
+
+    #[test]
+    fn example_3() {
+        let (csv, headers) = super::parse(include_str!("../tests/header.gef")).unwrap();
+
+        assert!(
+            headers.contains_key("PROCEDURECODE"),
+            "{:?}",
+            headers.into_keys().collect::<Vec<_>>()
+        );
+
+        assert!(
+            csv.trim().starts_with(
+                "0.00 -0.0039  0.0030  0.0676 -1.7342 34.2480 -3.2400  1.7355 52.7192"
+            ),
+            "{csv}",
+        );
+    }
 }

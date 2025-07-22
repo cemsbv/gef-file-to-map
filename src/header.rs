@@ -49,7 +49,7 @@ impl<'a> Header<'a> {
         let mut values: Vec<&str> = separated(
             0..,
             // Get until the ',' character and trim the spaces
-            delimited(space0, take_till(1.., (',', '\r', '\n')), space0)
+            delimited(space0, take_till(0.., (',', '\r', '\n')), space0)
                 .context(StrContext::Label("header value")),
             ',',
         )
@@ -123,6 +123,14 @@ mod tests {
             Header {
                 name: "A",
                 values: vec!["1", "2"]
+            }
+        );
+
+        assert_eq!(
+            Header::from_str(&mut "#A= 1, , Client").unwrap(),
+            Header {
+                name: "A",
+                values: vec!["1", "", "Client"]
             }
         );
     }
