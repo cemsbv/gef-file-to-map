@@ -2,9 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-07-22
+
+### Bug Fixes
+
+#### Header
+
+- Allow empty header values
+
+
+### Documentation
+
+#### Readme
+
+- Don't link to specific version in PyPi badge
+
+
+### Miscellaneous Tasks
+
+#### Ci
+
+- Move from dependabot to renovate
+
+
+### Testing
+
+#### Bench
+
+- Add benchmarks
+
+
 ## [0.2.0] - 2025-03-10
 
 ### Bug Fixes
+
+#### Ci
+
+- Manually install Rust pipeline in CI
 
 #### Deps
 
