@@ -1,6 +1,6 @@
 [project]
 name = "gef-file-to-map"
-version = "0.2.1"
+version = "1.0.0"
 description = "Utility library for parsing .gef files"
 requires-python = ">=3.11"
 readme = "README.md"
