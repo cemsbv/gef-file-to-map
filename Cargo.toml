@@ -6,9 +6,9 @@ rust-version = "1.85.0"
 
 [dependencies]
 itertools = "0.14.0"
-pyo3 = { version = "0.27.0", features = ["extension-module", "abi3-py37"] }
-thiserror = "2.0.12"
-winnow = "0.7.12"
+pyo3 = { version = "0.27.1", features = ["extension-module", "abi3-py37"] }
+thiserror = "2.0.17"
+winnow = "0.7.13"
 
 [dev-dependencies]
 divan = "0.1.21"
