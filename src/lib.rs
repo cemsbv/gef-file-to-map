@@ -101,4 +101,17 @@ mod tests {
             "{csv}",
         );
     }
+
+    #[test]
+    fn tabs() {
+        let (csv, headers) = super::parse(include_str!("../tests/tabs.gef")).unwrap();
+
+        assert!(
+            headers.contains_key("COMPANYID"),
+            "{:?}",
+            headers.into_keys().collect::<Vec<_>>()
+        );
+
+        assert!(csv.trim().starts_with("0.50	2.00	0.50"), "{csv}",);
+    }
 }

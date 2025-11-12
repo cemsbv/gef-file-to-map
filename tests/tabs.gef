@@ -1,0 +1,30 @@
+#GEFID               = 1, 1, 0
+#COLUMN              = 3
+#COLUMNINFO          = 1, m, Penetration length, 1
+#COLUMNINFO          = 2, MPa, Conusweerstand qc, 2
+#COLUMNINFO          = 3, m, corrected depth, 11
+#COMPANYID           = DUMMY, 00000000, 31
+#DATAFORMAT          = ASCII
+#FILEOWNER           = A. Nonymous
+#LASTSCAN            = 16
+#REPORTCODE          = GEF-CPT-Report, 1,1,1,-
+#TESTID              = FUGBEN1
+#XYID                = 31000, 0.0, 0.0, 1.0, 1.0
+#ZID                 = 31000, 0.0, 0.1
+#EOH                 =
+0.50	2.00	0.50
+2.00	2.00	2.00
+2.01	4.00	2.01
+6.00	4.00	6.00
+6.01	15.00	6.01
+14.00	15.00	14.00
+14.01	1.00	14.01
+16.00	1.00	16.00
+16.01	1.00	16.01
+17.00	1.00	17.00
+17.01	35.00	17.01
+20.00	35.00	20.00
+20.01	35.00	20.01
+23.99	35.00	23.99
+24.00	35.00	24.00
+30.00	35.00	30.00
