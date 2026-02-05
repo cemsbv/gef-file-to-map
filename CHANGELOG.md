@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2026-02-05
+
+### Bug Fixes
+- *Deps*: Update rust crate pyo3 to 0.28.0 (#15)
+- *Python*: Match ABI version with minimum supported Python
+
+### Miscellaneous Tasks
+- *Renovate*: Automerge all changes that pass the tests
+
+### Testing
+- *Whitespace*: GEF file with tabs around the keys
+
 ## [1.0.0] - 2025-10-31
 
 ### Bug Fixes
